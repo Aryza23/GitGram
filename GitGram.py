@@ -46,8 +46,8 @@ def help(_bot, update):
     """/help message for the bot"""
     message = update.effective_message
     message.reply_text(
-        f"*Available Commands*\n\n`/connect` - Setup how to connect this chat to receive Git activity notifications.\n`/support` - Get links to get support if you're stuck.\n`/source` - Get the Git repository URL.",
-        parse_mode="markdown"
+        "*Available Commands*\\n\\n`/connect` - Setup how to connect this chat to receive Git activity notifications.\\n`/support` - Get links to get support if you're stuck.\\n`/source` - Get the Git repository URL.",
+        parse_mode="markdown",
     )
 
 
@@ -55,8 +55,8 @@ def support(_bot, update):
     """Links to Support"""
     message = update.effective_message
     message.reply_text(
-        f"*Getting Support*\n\nTo get support in using the bot, join [the GitGram support](https://t.me/GitGramChat).",
-        parse_mode="markdown"
+        "*Getting Support*\\n\\nTo get support in using the bot, join [the GitGram support](https://t.me/GitGramChat).",
+        parse_mode="markdown",
     )
 
 
@@ -64,8 +64,8 @@ def source(_bot, update):
     """Link to Source"""
     message = update.effective_message
     message.reply_text(
-        f"*Source*:\n[GitGram Repo](https://waa.ai/GitGram).",
-        parse_mode="markdown"
+        "*Source*:\\n[GitGram Repo](https://waa.ai/GitGram).",
+        parse_mode="markdown",
     )
 
 
@@ -89,7 +89,7 @@ dispatcher.add_handler(sourcecode)
 updater.start_polling()
 
 TG_BOT_API = f'https://api.telegram.org/bot{BOT_TOKEN}/'
-checkbot = get(TG_BOT_API + "getMe").json()
+checkbot = get(f'{TG_BOT_API}getMe').json()
 if not checkbot['ok']:
     log.error("[ERROR] Invalid Token!")
     exit(1)
@@ -101,27 +101,21 @@ else:
 
 def post_tg(chat, message, parse_mode):
     """Send message to desired group"""
-    response = post(
-        TG_BOT_API + "sendMessage",
-        params={
-            "chat_id": chat,
-            "text": message,
-            "parse_mode": parse_mode,
-            "disable_web_page_preview": True}).json()
-    return response
+    return post(f'{TG_BOT_API}sendMessage', params={
+                "chat_id": chat,
+                "text": message,
+                "parse_mode": parse_mode,
+                "disable_web_page_preview": True}).json()
 
 
 def reply_tg(chat, message_id, message, parse_mode):
     """reply to message_id"""
-    response = post(
-        TG_BOT_API + "sendMessage",
-        params={
-            "chat_id": chat,
-            "reply_to_message_id": message_id,
-            "text": message,
-            "parse_mode": parse_mode,
-            "disable_web_page_preview": True}).json()
-    return response
+    return post(f'{TG_BOT_API}sendMessage', params={
+                "chat_id": chat,
+                "reply_to_message_id": message_id,
+                "text": message,
+                "parse_mode": parse_mode,
+                "disable_web_page_preview": True}).json()
 
 
 @server.route("/", methods=['GET'])
